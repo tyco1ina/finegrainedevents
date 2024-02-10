@@ -13,16 +13,24 @@ from nltk import pos_tag
 from nltk import word_tokenize
 from nltk.corpus import stopwords
 
-parser = argparse.ArgumentParser(description='Data building logistics')
-parser.add_argument('--build-train-valid', action='store_true', help='build training and testing dataset from scratch')
-parser.add_argument('--build-pos', action='store_true', help='build POS tagging mappings, stored in JSON format')
-args = parser.parse_args()
+# Removed the next four lines in response to the error
+'''
+usage: ipykernel_launcher.py [-h] [--build-train-valid] [--build-pos]
+ipykernel_launcher.py: error: unrecognized arguments: --ip=127.0.0.1 --stdin=9011 --control=9009 --hb=9008 --Session.signature_scheme="hmac-sha256" --Session.key=b"bf73426b-5dc3-46a1-abab-70426baeecd6" --shell=9010 --transport="tcp" --iopub=9012 --f=/Users/tiberiuscolina/Library/Jupyter/runtime/kernel-v2-2974oT1N1bLgKevh.json
+'''
+# parser = argparse.ArgumentParser(description='Data building logistics')
+# parser.add_argument('--build-train-valid', action='store_true', help='build training and testing dataset from scratch')
+# parser.add_argument('--build-pos', action='store_true', help='build POS tagging mappings, stored in JSON format')
+# args = parser.parse_args()
 
 LAST_DAY_FLAG = '09:10:00'
 OUT_OF_TRADE_FLAG = '14:50:00'
 ONE_DAY = datetime.timedelta(days=1)
 UNKNOWN = '<UNK>'
-TICKERS = os.listdir('train')
+
+# Removed next one line in response to the error
+# FileNotFoundError: [Errno 2] No such file or directory: 'train'
+# TICKERS = os.listdir('train')
 
 class BuildPOS:
     def __init__(self):
@@ -179,8 +187,12 @@ def train_valid_split(path_to_event = 'news.json', path_to_stock = 'historical_p
             build_dataset(ticker, stock, news_valid, './valid')
             pbar.update()
 
-if args.build_train_valid:
-    train_valid_split()
-
-if args.build_pos:
-    build_pos('train', 'valid')
+# Removed the next four lines in response to the error
+'''
+usage: ipykernel_launcher.py [-h] [--build-train-valid] [--build-pos]
+ipykernel_launcher.py: error: unrecognized arguments: --ip=127.0.0.1 --stdin=9011 --control=9009 --hb=9008 --Session.signature_scheme="hmac-sha256" --Session.key=b"bf73426b-5dc3-46a1-abab-70426baeecd6" --shell=9010 --transport="tcp" --iopub=9012 --f=/Users/tiberiuscolina/Library/Jupyter/runtime/kernel-v2-2974oT1N1bLgKevh.json
+'''
+# if args.build_train_valid:
+#     train_valid_split()
+# if args.build_pos:
+#     build_pos('train', 'valid')
