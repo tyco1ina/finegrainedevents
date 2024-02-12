@@ -251,23 +251,36 @@ class MSSPM(nn.Module):
     '''
     def __init__(self, hidden_dim, sent_encoder_layers = 3, stock_encoder_layers = 3, num_heads = 4, \
                  dropout = 0.2, mode = 0, **kwargs):
-        assert (hidden_dim * 2) % num_heads == 0, 'Attention hidden dimension is not divisible by the number of attention heads'
+        
+        print("IS THE CODE GETTING HERE")
+        print("IT SHOULD BE GETTING HERE TOO")
+        
         assert mode in (0, 1, 2), 'Current mode not supported'
         super(MSSPM, self).__init__()
+
+        print("GOT HERE 2")
 
         # Load pre-trained ELMo embeddings
         options_file = "https://allennlp.s3.amazonaws.com/models/elmo/2x4096_512_2048cnn_2xhighway/elmo_2x4096_512_2048cnn_2xhighway_options.json"
         weight_file = "https://allennlp.s3.amazonaws.com/models/elmo/2x4096_512_2048cnn_2xhighway/elmo_2x4096_512_2048cnn_2xhighway_weights.hdf5"
         self.sent_embed = Elmo(options_file, weight_file, 1, dropout=0)
+        print("GOT HERE 3")
         self.sent_encoder = BiLSTM(hidden_dim = hidden_dim, num_layers = sent_encoder_layers, dropout = dropout)
+        print("GOT HERE 4")
         self.sent_attn = nn.MultiheadAttention(2 * hidden_dim, num_heads = num_heads)
+        print("GOT HERE 5")
         self.stock_encoder = BiLSTM(input_dim = 120, hidden_dim = hidden_dim, num_layers = stock_encoder_layers, dropout = dropout)
+        print("GOT HERE 6")
         self.stock_attn = nn.MultiheadAttention(2 * hidden_dim, num_heads = num_heads)
+
+        print("GOT HERE 10")
 
         if mode >= 1:
             if mode == 2: self.event_crf = CRF(2 * hidden_dim, kwargs['event_size'])
             self.event_encoder = nn.Embedding(kwargs['event_size'], 2 * hidden_dim)
             self.fuse = TensorFusion(2 * hidden_dim, 2 * hidden_dim)
+
+        print("GOT HERE 11")
 
         self.co_attn = CoAttention(dim_x = 2 * hidden_dim, dim_y = 2 * hidden_dim)
         self.sent_gate = GatedSum(2 * hidden_dim, 2 * hidden_dim)
@@ -275,6 +288,8 @@ class MSSPM(nn.Module):
         self.classifier = Classifier(4 * hidden_dim)
         self.gpu = torch.cuda.is_available()
         self.mode = mode
+
+        print("GOT HERE 5")
 
     def compute_mask(self, x, x_lens):
         '''A helper function implemented to generate boolean mask required for attention layers
