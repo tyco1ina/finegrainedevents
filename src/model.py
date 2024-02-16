@@ -17,8 +17,11 @@ class BiLSTM(nn.Module):
     '''
     def __init__(self, input_dim = 1024, hidden_dim = 256, num_layers = 3, bidirectional = True, dropout = 0.2):
         super(BiLSTM, self).__init__()
+
+        print(f"Value of dropout is {dropout}")
         self.encoder = nn.LSTM(input_size = input_dim, hidden_size = hidden_dim, dropout = dropout, \
                                num_layers = num_layers, bidirectional = bidirectional)
+        print("this line completes")
 
     def forward(self, x, lens):
         '''
@@ -265,7 +268,8 @@ class MSSPM(nn.Module):
         weight_file = "https://allennlp.s3.amazonaws.com/models/elmo/2x4096_512_2048cnn_2xhighway/elmo_2x4096_512_2048cnn_2xhighway_weights.hdf5"
         self.sent_embed = Elmo(options_file, weight_file, 1, dropout=0)
         print("GOT HERE 3")
-        self.sent_encoder = BiLSTM(hidden_dim = hidden_dim, num_layers = sent_encoder_layers, dropout = dropout)
+        print(f"Value of dropout is {dropout}")
+        self.sent_encoder = BiLSTM(hidden_dim = hidden_dim, num_layers = sent_encoder_layers, dropout = 0.2)
         print("GOT HERE 4")
         self.sent_attn = nn.MultiheadAttention(2 * hidden_dim, num_heads = num_heads)
         print("GOT HERE 5")
